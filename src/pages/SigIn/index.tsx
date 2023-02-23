@@ -1,22 +1,19 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
+import { useDataContext } from '../../context/AuthContextUser'
 
 const SigIn = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = () => {
+  const {sigIn} = useDataContext()
 
-    if(email === '' || !email.includes('@')) return Alert.alert('Email invalido')
-
-    if(password === '') return Alert.alert('Senha invalida')
-
-    console.log(email)
-    console.log(password)
-
-    
+  const handleSubmit = async () => {
+    await sigIn(email, password)
   }
+
+  const {loadingAuth} = useDataContext()
 
   return (
     <View style={style.container}>
@@ -42,7 +39,11 @@ const SigIn = () => {
         onChangeText={setPassword}/>
 
         <TouchableOpacity style={style.button} onPress={handleSubmit}>
-          <Text style={style.buttonText}>Acessar</Text>
+          {loadingAuth? (
+            <ActivityIndicator size={25} color="#fff" />
+          ) : (
+            <Text style={style.buttonText}>Acessar</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

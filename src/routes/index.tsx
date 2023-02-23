@@ -1,11 +1,11 @@
 import { ActivityIndicator, View } from "react-native";
+import { useDataContext } from "../context/AuthContextUser";
 import { AppRoutes } from "./app.routes";
 import { AuthRoute } from "./auth.routes";
 
 function Routes() {
 
-  const isAuthenticated = false
-  const loading = false
+  const {isAuthenticated, loading} = useDataContext()
 
   if (loading) {
     return (
