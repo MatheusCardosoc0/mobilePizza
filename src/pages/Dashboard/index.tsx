@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp, NativeStackNavigatorProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 import { StackPramsList } from '../../routes/app.routes'
+import { api } from '../../services/api'
 
 const Dashboard = () => {
 
@@ -17,7 +18,14 @@ const Dashboard = () => {
   async function openOrder(){
     if(number === '') return alert("Preencha o número da mesa")
 
-    navigation.navigate("Order", {number: number, order_id: ''})
+    const response = await api.post('/order', {
+      table: Number(number)
+    })
+
+
+    navigation.navigate("Order", {number: number, order_id: response.data.id})
+
+    setNumber('')
   }
 
   return (
